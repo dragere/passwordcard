@@ -58,11 +58,48 @@
     let exclude = ""
     let dict = ["abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "0123456789", ",.;:!?-+*%/&'\"#()"]
     let seed: string = "change me 😀"
+
+    let color_options = [
+        {
+            fg: [...Array(8)].fill(`#000`),
+            bg: [...Array(8)].map((_, i) => `hsl(${360 / 8 * i}deg 70% 80%);`)
+        },
+        {
+            fg: [...Array(8)].fill(`#000`),
+            bg: [
+                "#d77691",
+                "#de6e3e",
+                "#c0ab5e",
+                "#90d24c",
+                "#73c796",
+                "#94b2be",
+                "#9689d8",
+                "#d254d6"
+            ]
+        },
+        {
+            fg: [...Array(8)].fill(`#000`),
+            bg: [
+                '#F2C4DE',
+                '#c8eeb2',
+                '#E6E6FA',
+                '#FFDAB9',
+                '#AED8E6',
+                '#FFFACD',
+                '#C8A2C8',
+                '#F08080'
+            ]
+        }
+    ]
+    let color_choice = 2;
+
     $: rng = getRNG(seed);
-    $: numseed = Math.floor(rng()*15559) /// used for the colors each block
+    $: numseed = Math.floor(rng() * 15559) /// used for the colors each block
     $: inputList = Array.from(input)
     $: fullDict = Array.from(new Set(Array.from(dict.join('') + customDict).filter(c => !exclude.includes(c))))
-    $: out = generateOutput(fullDict, inputList.length, 8)
+    $: out = generateOutput(fullDict, inputList.length, 8);
+
+    console.log(color_options[color_choice])
 </script>
 
 
@@ -95,12 +132,12 @@
 
     {/if}
 </div>
-<div class="card" >
+<div class="card">
     <div class:cardborder></div>
     <div class="blocks">
         {#each out as block,i}
             <div class="block-wrapper">
-                <Block input={inputList[i]} output={block} colorOffsetIndex={i} seed={numseed}/>
+                <Block input={inputList[i]} output={block} colorOffsetIndex={i} seed={numseed} colors={color_options[color_choice]}/>
             </div>
         {/each}
         <div class="block-wrapper" style="width: {39.333 * Math.max(3,8-input.length%8) - 2}px">
