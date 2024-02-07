@@ -21,12 +21,17 @@
     }) => {
         let bg: string[] = [];
         let fg: string[] = [];
+        let center_bg = col.bg[0];
+        let center_fg = col.fg[0];
+        let bg_cols = col.bg.slice(1);
+        let fg_cols = col.fg.slice(1);
+
         for (const i of permuts[(colorOffsetIndex+1)*numseed%permuts.length]){
-            bg.push(col.bg[i]);
-            fg.push(col.fg[i]);
+            bg.push(bg_cols[i]);
+            fg.push(fg_cols[i]);
         }
-        bg = bg.slice(0, 4).concat("#fff", ...bg.slice(-4))
-        fg = fg.slice(0, 4).concat("#000", ...fg.slice(-4))
+        bg = bg.slice(0, 4).concat(center_bg, ...bg.slice(-4))
+        fg = fg.slice(0, 4).concat(center_fg, ...fg.slice(-4))
         return [bg,fg];
     }
 

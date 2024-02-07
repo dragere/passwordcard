@@ -62,8 +62,9 @@
 
     let color_options = [
         {
-            fg: [...Array(8)].fill(`#000`),
+            fg: [...Array(9)].fill(`#000`),
             bg: [
+                "#fff",
                 "#f0a8a8",
                 "#a8f0f0",
                 "#a8f0ba",
@@ -75,8 +76,9 @@
             ]
         },
         {
-            fg: [...Array(8)].fill(`#000`),
+            fg: [...Array(9)].fill(`#000`),
             bg: [
+                "#fff",
                 "#d77691",
                 "#de6e3e",
                 "#c0ab5e",
@@ -88,8 +90,9 @@
             ]
         },
         {
-            fg: [...Array(8)].fill(`#000`),
+            fg: [...Array(9)].fill(`#000`),
             bg: [
+                "#fff",
                 '#F2C4DE',
                 '#c8eeb2',
                 '#E6E6FA',
@@ -108,7 +111,6 @@
     $: inputList = Array.from(input)
     $: fullDict = Array.from(new Set(Array.from(dict.join('') + customDict).filter(c => !exclude.includes(c))))
     $: out = generateOutput(fullDict, inputList.length, 8);
-    $: console.log(color_choice)
 </script>
 
 
@@ -141,7 +143,7 @@
         {/each}
         </div>
         <div class="color-options">
-
+            Click to customize colors
             {#each color_options as _,i}
                 <div class="color-option">
                 <label >
@@ -149,15 +151,20 @@
 
                     {#each Array(8) as _,j}
                         <span class="color-pair">
+                            <span class="picker">
                         <ColorPicker
                                 components={A11yVariant}
                                 bind:hex={color_options[i].bg[j]}
+                                --picker-height="100px"
+                                --picker-width="100px"
                                 label=""
                                 isAlpha={false}
                                 a11yColors={[
 		{ textHex: color_options[color_choice].fg[j], reverse: true, placeholder: '◇' },
 	]}
                         />
+                                </span>
+                            <span class="picker">
                         <ColorPicker
                                 components={A11yVariant}
                                 bind:hex={color_options[i].fg[j]}
@@ -170,7 +177,7 @@
 		{ bgHex: color_options[color_choice].bg[j], placeholder: '◇' },
 	]}
                         />
-                            </span>
+                            </span></span>
                     {/each}
                 </label>
                 </div>
@@ -256,7 +263,12 @@
         display: flex;
         flex-direction: column;
     }
-
+.picker {
+    border: 1px solid black;
+    border-radius: 5rem;
+    width: fit-content;
+    margin: 2px;
+}
     .color-pair{
         display: flex;
         flex-direction: column;
@@ -265,6 +277,9 @@
         border-bottom: 1px solid #333;
         display: flex;
         flex-direction: row;
+    }
+    .color-pair:nth-child(2){
+        border-right: 1px solid black;
     }
     .color-options{
         margin: 0.5rem 0;
