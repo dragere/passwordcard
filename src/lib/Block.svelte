@@ -15,19 +15,22 @@
 
     $: cells = output.slice(0, 4).concat(input, output.slice(-4))
 
-    let generateColors = (numseed: number) => {
+    let generateColors = (numseed: number, col: {
+        bg: string[],
+        fg: string[]
+    }) => {
         let bg: string[] = [];
         let fg: string[] = [];
         for (const i of permuts[(colorOffsetIndex+1)*numseed%permuts.length]){
-            bg.push(colors.bg[i]);
-            fg.push(colors.fg[i]);
+            bg.push(col.bg[i]);
+            fg.push(col.fg[i]);
         }
         bg = bg.slice(0, 4).concat("#fff", ...bg.slice(-4))
         fg = fg.slice(0, 4).concat("#000", ...fg.slice(-4))
         return [bg,fg];
     }
 
-    $: [colors_bg, colors_fg] = generateColors(seed);
+    $: [colors_bg, colors_fg] = generateColors(seed, colors);
 </script>
 
 <div class="block">

@@ -1,6 +1,7 @@
 <script lang="ts">
     import {getRNG} from "$lib/util";
     import Block from "$lib/Block.svelte";
+    import ColorPicker, { A11yVariant } from 'svelte-awesome-color-picker';
 
     let generateOutput = (dict: string[], colNum: number, chunkSize: number): string[][] => {
         if (dict.length === 0) dict = [" "]
@@ -62,7 +63,16 @@
     let color_options = [
         {
             fg: [...Array(8)].fill(`#000`),
-            bg: [...Array(8)].map((_, i) => `hsl(${360 / 8 * i}deg 70% 80%);`)
+            bg: [
+                "#f0a8a8",
+                "#a8f0f0",
+                "#a8f0ba",
+                "#cca8f0",
+                "#f0a8de",
+                "#f0dea8",
+                "#ccf0a8",
+                "#a8baf0"
+            ]
         },
         {
             fg: [...Array(8)].fill(`#000`),
@@ -91,15 +101,14 @@
             ]
         }
     ]
-    let color_choice = 2;
+    $: color_choice = 2;
 
     $: rng = getRNG(seed);
     $: numseed = Math.floor(rng() * 15559) /// used for the colors each block
     $: inputList = Array.from(input)
     $: fullDict = Array.from(new Set(Array.from(dict.join('') + customDict).filter(c => !exclude.includes(c))))
     $: out = generateOutput(fullDict, inputList.length, 8);
-
-    console.log(color_options[color_choice])
+    $: console.log(color_choice)
 </script>
 
 
@@ -113,6 +122,7 @@
         <label><input type="checkbox" bind:checked={cardborder}/>show credit card border <span style="font-size: 7pt">(ISO/IEC 7810 ID-1)</span></label>
     </div>
     {#if extraOptions}
+        <div class="text-options">
         <label class="text-label" for="input">input:
             <input id="input" class="text-input" bind:value={input} placeholder="input"/>
         </label>
@@ -129,7 +139,44 @@
                 {classNames[cls]}
             </label>
         {/each}
+        </div>
+        <div class="color-options">
 
+            {#each color_options as _,i}
+                <div class="color-option">
+                <label >
+                    <input type="radio" bind:group={color_choice} value={i}/>
+
+                    {#each Array(8) as _,j}
+                        <span class="color-pair">
+                        <ColorPicker
+                                components={A11yVariant}
+                                bind:hex={color_options[i].bg[j]}
+                                label=""
+                                isAlpha={false}
+                                a11yColors={[
+		{ textHex: color_options[color_choice].fg[j], reverse: true, placeholder: '◇' },
+	]}
+                        />
+                        <ColorPicker
+                                components={A11yVariant}
+                                bind:hex={color_options[i].fg[j]}
+                                --input-size="15px"
+                                --picker-height="100px"
+                                --picker-width="100px"
+                                label=""
+                                isAlpha={false}
+                                a11yColors={[
+		{ bgHex: color_options[color_choice].bg[j], placeholder: '◇' },
+	]}
+                        />
+                            </span>
+                    {/each}
+                </label>
+                </div>
+            {/each}
+
+        </div>
     {/if}
 </div>
 <div class="card">
@@ -208,6 +255,19 @@
     .settings {
         display: flex;
         flex-direction: column;
+    }
+
+    .color-pair{
+        display: flex;
+        flex-direction: column;
+    }
+    .color-option > label{
+        border-bottom: 1px solid #333;
+        display: flex;
+        flex-direction: row;
+    }
+    .color-options{
+        margin: 0.5rem 0;
     }
 
     #seedDisplay {
