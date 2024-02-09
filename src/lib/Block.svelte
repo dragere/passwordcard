@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {permuts} from "$lib/util";
+    import {permuts} from "./util";
 
     export let input: string;
     export let output: string[];

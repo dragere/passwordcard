@@ -1,7 +1,9 @@
 <script lang="ts">
-    import {getRNG} from "$lib/util";
-    import Block from "$lib/Block.svelte";
+    import {getRNG} from "./util";
+    import Block from "./Block.svelte";
     import ColorPicker, {A11yVariant} from 'svelte-awesome-color-picker';
+
+    export let cardId: Number;
 
     let generateOutput = (dict: string[], colNum: number, chunkSize: number): string[][] => {
         if (dict.length === 0) dict = [" "]
@@ -100,7 +102,7 @@
                 '#AED8E6',
                 '#FFFACD',
                 '#C8A2C8',
-                '#F08080'
+                '#fcaeae'
             ]
         }
     ]
@@ -115,13 +117,13 @@
 
 
 <div class="settings">
-    <label class="text-label" for="seed">seed: <input id="seed" class="text-input" bind:value={seed}
+    <label class="text-label" for={`seed${cardId}`}>seed: <input id={`seed${cardId}`} class="text-input" bind:value={seed}
                                                       placeholder="seed"/>
         <button on:click={generateSeed}>generate</button>
     </label>
     <div>
-        <label><input type="checkbox" bind:checked={extraOptions}/>options</label>
-        <label><input type="checkbox" bind:checked={cardborder}/>show credit card border <span style="font-size: 7pt">(ISO/IEC 7810 ID-1)</span></label>
+        <label><input type="checkbox" bind:checked={extraOptions} name="extraOptions"/>options</label>
+        <label><input type="checkbox" bind:checked={cardborder} name="cardborder"/>show credit card border <span style="font-size: 7pt">(ISO/IEC 7810 ID-1)</span></label>
     </div>
     {#if extraOptions}
         <div class="text-options">
@@ -196,7 +198,7 @@
             </div>
         {/each}
         <div class="block-wrapper" style="width: {39.333 * Math.max(3,8-input.length%8) - 2}px">
-            <div id="seedDisplay">{seed}</div>
+            <div class="seedDisplay">{seed}</div>
             <div id="fullDict">{fullDict.join("")}</div>
         </div>
     </div>
@@ -308,7 +310,7 @@
         margin: 0.5rem 0;
     }
 
-    #seedDisplay {
+    .seedDisplay {
         font-family: monospace;
         font-size: xx-small;
         background-color: grey;

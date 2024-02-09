@@ -1,5 +1,6 @@
 <script lang="ts">
-    import CardGenerator from "$lib/CardGenerator.svelte";
+    import CardGenerator from "./lib/CardGenerator.svelte";
+
 
     let cardNum = 1;
 </script>
@@ -10,9 +11,9 @@
             <h3>Password card</h3>
         </div>
         <div class="cards">
-            {#each Array(cardNum) as _}
+            {#each Array(cardNum) as _,i}
                 <div class="card-box">
-                    <CardGenerator></CardGenerator>
+                    <CardGenerator cardId={i}></CardGenerator>
                 </div>
             {/each}
         </div>
@@ -23,22 +24,27 @@
             {/if}
             <button on:click={()=>window.print()} title="print all cards">print</button>
             <h4>Password Card Generator</h4>
-            <p>This tool allows you to generate a card that helps you create and remember secure passwords. It can be
+            <p>This tool allows you to generate a card that helps you create and remember secure passwords. It can
+                be
                 used as an alternative to a password manager or as a way to remember your master password for your
                 password manager.</p>
             <h5>Usage</h5>
-            <p>To create a new secure password, start by thinking of a password that is easy for you to remember. Then,
-                come up with a method to convert the characters. For example, you could always choose the yellow and top
+            <p>To create a new secure password, start by thinking of a password that is easy for you to remember.
+                Then,
+                come up with a method to convert the characters. For example, you could always choose the yellow and
+                top
                 left characters. Next, locate each character from your password in the white fields of the card and
                 apply the conversion.</p>
             By using this strategy, along with the default seed and settings,
             <pre>password</pre>
             will be transformed into
-            <pre>%Z((0'0'Y%OO:6h?</pre>.
+            <pre>%Z((0'0'Y%OO:6h?</pre>
+            .
             This password already has an acceptable entropy score of 84 bits in KeePassXC's generator.
             <p>You can change the seed to modify the characters and colors around each block.</p>
             In the options the character sets for both input and output can be changed.
-            Seed and output set will be printed in the bottom right corner, so you can recreate the card if necessary.
+            Seed and output set will be printed in the bottom right corner, so you can recreate the card if
+            necessary.
             <p>Inspired by <a href="https://github.com/PeterBrockfeld/passwordCardGenerator">PeterBrockfeld/passwordCardGenerator</a>
                 and <a href="https://www.ines-it.de/informationssicherheit/passwortkarte/">ines-it password card</a>.
                 This implementation is more customizable and supports emoji (not looking pretty).
@@ -46,6 +52,7 @@
         </div>
     </div>
 </div>
+
 <style>
 
     .background {
