@@ -1,7 +1,7 @@
 <script lang="ts">
     import {getRNG} from "$lib/util";
     import Block from "$lib/Block.svelte";
-    import ColorPicker, { A11yVariant } from 'svelte-awesome-color-picker';
+    import ColorPicker, {A11yVariant} from 'svelte-awesome-color-picker';
 
     let generateOutput = (dict: string[], colNum: number, chunkSize: number): string[][] => {
         if (dict.length === 0) dict = [" "]
@@ -125,45 +125,32 @@
     </div>
     {#if extraOptions}
         <div class="text-options">
-        <label class="text-label" for="input">input:
-            <input id="input" class="text-input" bind:value={input} placeholder="input"/>
-        </label>
-        <label class="text-label" for="custom">custom characters:
-            <input id="custom" class="text-input" bind:value={customDict} placeholder="custom characters"/>
-        </label>
-        <label class="text-label" for="excluded">excluded characters:
-            <input id="excluded" class="text-input" bind:value={exclude} placeholder="excluded characters"/>
-        </label>
-
-        {#each classes as cls}
-            <label title="{cls}">
-                <input type="checkbox" bind:group={dict} value={cls}/>
-                {classNames[cls]}
+            <label class="text-label" for="input">input:
+                <input id="input" class="text-input" bind:value={input} placeholder="input"/>
             </label>
-        {/each}
+            <label class="text-label" for="custom">custom characters:
+                <input id="custom" class="text-input" bind:value={customDict} placeholder="custom characters"/>
+            </label>
+            <label class="text-label" for="excluded">excluded characters:
+                <input id="excluded" class="text-input" bind:value={exclude} placeholder="excluded characters"/>
+            </label>
+
+            {#each classes as cls}
+                <label title="{cls}">
+                    <input type="checkbox" bind:group={dict} value={cls}/>
+                    {classNames[cls]}
+                </label>
+            {/each}
         </div>
         <div class="color-options">
             Click to customize colors
             {#each color_options as _,i}
                 <div class="color-option">
-                <label >
-                    <input type="radio" bind:group={color_choice} value={i}/>
+                    <label>
+                        <input type="radio" bind:group={color_choice} value={i}/>
 
-                    {#each Array(8) as _,j}
+                        {#each Array(9) as _,j}
                         <span class="color-pair">
-                            <span class="picker">
-                        <ColorPicker
-                                components={A11yVariant}
-                                bind:hex={color_options[i].bg[j]}
-                                --picker-height="100px"
-                                --picker-width="100px"
-                                label=""
-                                isAlpha={false}
-                                a11yColors={[
-		{ textHex: color_options[color_choice].fg[j], reverse: true, placeholder: '◇' },
-	]}
-                        />
-                                </span>
                             <span class="picker">
                         <ColorPicker
                                 components={A11yVariant}
@@ -177,9 +164,22 @@
 		{ bgHex: color_options[color_choice].bg[j], placeholder: '◇' },
 	]}
                         />
-                            </span></span>
-                    {/each}
-                </label>
+                            </span>
+                            <span class="picker">
+                        <ColorPicker
+                                components={A11yVariant}
+                                bind:hex={color_options[i].bg[j]}
+                                --picker-height="100px"
+                                --picker-width="100px"
+                                label=""
+                                isAlpha={false}
+                                a11yColors={[
+		{ textHex: color_options[color_choice].fg[j], reverse: true, placeholder: '◇' },
+	]}
+                        />
+                                </span></span>
+                        {/each}
+                    </label>
                 </div>
             {/each}
 
@@ -191,7 +191,8 @@
     <div class="blocks">
         {#each out as block,i}
             <div class="block-wrapper">
-                <Block input={inputList[i]} output={block} colorOffsetIndex={i} seed={numseed} colors={color_options[color_choice]}/>
+                <Block input={inputList[i]} output={block} colorOffsetIndex={i} seed={numseed}
+                       colors={color_options[color_choice]}/>
             </div>
         {/each}
         <div class="block-wrapper" style="width: {39.333 * Math.max(3,8-input.length%8) - 2}px">
@@ -256,6 +257,7 @@
         background-color: #d2e8d7;
         border-radius: 2px;
         padding: 2px;
+        display: block;
     }
 
 
@@ -263,25 +265,46 @@
         display: flex;
         flex-direction: column;
     }
-.picker {
-    border: 1px solid black;
-    border-radius: 5rem;
-    width: fit-content;
-    margin: 2px;
-}
-    .color-pair{
+
+    .picker {
+        /*border: 1px solid black;*/
+        /*border-radius: 5rem;*/
+        /*width: fit-content;*/
+        margin: 2px;
+    }
+
+    .color-pair {
         display: flex;
         flex-direction: column;
+        margin: 2px;
+        width: 40px;
+
+        border-radius: 0.25rem;
+
+        /*background-color: white;*/
+        /*background-size: 40px 45px;*/
+        /*background-image: linear-gradient(to right, rgba(0, 0, 0, 0.3) 50%, transparent 50%, transparent), linear-gradient(to right, transparent 0%, transparent 50%, rgba(0, 0, 0, 0) 50%), linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 50%, transparent 50%, transparent), linear-gradient(to bottom, transparent 0%, transparent 50%, rgba(0, 0, 0, 0) 50%), linear-gradient(to bottom, white 50%, transparent 50%, transparent), linear-gradient(to right, transparent 0%, transparent 50%, rgba(0, 0, 0, 0.5) 50%), none;*/
+
+        background-color: #ccc;
+        background-size: 10px 10px;
+        background-image: linear-gradient( 45deg, #777 25%, transparent 25%, transparent),
+        linear-gradient(-45deg, #777 25%, transparent 25%, transparent),
+        linear-gradient( 45deg, transparent 75%, #777 75%),
+        linear-gradient(-45deg, transparent 75%, #777 75%)
     }
-    .color-option > label{
+
+    .color-option > label {
         border-bottom: 1px solid #333;
         display: flex;
         flex-direction: row;
     }
-    .color-pair:nth-child(2){
-        border-right: 1px solid black;
+
+    .color-pair:nth-child(2) {
+        /*border-right: 1px solid black;*/
+        margin-right: 0.5rem;
     }
-    .color-options{
+
+    .color-options {
         margin: 0.5rem 0;
     }
 

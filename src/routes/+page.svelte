@@ -49,7 +49,7 @@
 <style>
 
     .background {
-        max-width: 100vw;
+        max-width: 100%;
         width: 100vw;
         min-height: 100vh;
         background-color: #5f7a63;
@@ -82,6 +82,14 @@
     @media (min-width: 600px) {
         .container {
             width: 500px;
+            border-radius: 1rem;
+            margin: 1rem auto;
+        }
+    }
+
+    @media (min-width: 1000px) {
+        .container {
+            width: 900px;
             border-radius: 1rem;
             margin: 1rem auto;
         }
