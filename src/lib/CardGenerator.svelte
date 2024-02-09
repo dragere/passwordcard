@@ -67,52 +67,43 @@
             fg: [...Array(9)].fill(`#000`),
             bg: [
                 "#fff",
-                "#f0a8a8",
-                "#a8f0f0",
-                "#a8f0ba",
-                "#cca8f0",
-                "#f0a8de",
-                "#f0dea8",
-                "#ccf0a8",
-                "#a8baf0"
+                "#d0d0d0",
+                "#f6acac",
+                "#f6ebac",
+                "#c1f6ac",
+                "#acf6d6",
+                "#acd6f6",
+                "#c1acf6",
+                "#f6aceb"
             ]
         },
         {
             fg: [...Array(9)].fill(`#000`),
             bg: [
                 "#fff",
-                "#d77691",
-                "#de6e3e",
-                "#c0ab5e",
-                "#90d24c",
-                "#73c796",
-                "#94b2be",
-                "#9689d8",
-                "#d254d6"
-            ]
-        },
-        {
-            fg: [...Array(9)].fill(`#000`),
-            bg: [
-                "#fff",
-                '#F2C4DE',
-                '#c8eeb2',
                 '#E6E6FA',
+                '#fcaeae',
                 '#FFDAB9',
-                '#AED8E6',
                 '#FFFACD',
+                '#c8eeb2',
+                '#AED8E6',
                 '#C8A2C8',
-                '#fcaeae'
+                '#F2C4DE'
             ]
         }
     ]
-    $: color_choice = 2;
+    $: color_choice = 1;
 
-    $: rng = getRNG(seed);
-    $: numseed = Math.floor(rng() * 15559) /// used for the colors each block
     $: inputList = Array.from(input)
     $: fullDict = Array.from(new Set(Array.from(dict.join('') + customDict).filter(c => !exclude.includes(c))))
-    $: out = generateOutput(fullDict, inputList.length, 8);
+    let rng: Function;
+    let numseed: Number;
+    let out: String[][];
+    $:{
+        rng = getRNG(seed);
+        numseed = Math.floor(rng() * 15559) /// used for the colors each block
+        out = generateOutput(fullDict, inputList.length, 8);
+    }
 </script>
 
 
@@ -127,9 +118,17 @@
     </div>
     {#if extraOptions}
         <div class="text-options">
-            <label class="text-label" for="input">input:
+            <label class="text-label" for="input" title="Characters that can be used in the password you remember">input:
                 <input id="input" class="text-input" bind:value={input} placeholder="input"/>
             </label>
+
+            <div title="Characters in the resulting password">Output options</div>
+            {#each classes as cls}
+                <label title="{cls}">
+                    <input type="checkbox" bind:group={dict} value={cls}/>
+                    {classNames[cls]}
+                </label>
+            {/each}
             <label class="text-label" for="custom">custom characters:
                 <input id="custom" class="text-input" bind:value={customDict} placeholder="custom characters"/>
             </label>
@@ -137,12 +136,6 @@
                 <input id="excluded" class="text-input" bind:value={exclude} placeholder="excluded characters"/>
             </label>
 
-            {#each classes as cls}
-                <label title="{cls}">
-                    <input type="checkbox" bind:group={dict} value={cls}/>
-                    {classNames[cls]}
-                </label>
-            {/each}
         </div>
         <div class="color-options">
             Click to customize colors
@@ -163,7 +156,7 @@
                                 label=""
                                 isAlpha={false}
                                 a11yColors={[
-		{ bgHex: color_options[color_choice].bg[j], placeholder: '◇' },
+		{ bgHex: color_options[i].bg[j], placeholder: '◇' },
 	]}
                         />
                             </span>
@@ -176,7 +169,7 @@
                                 label=""
                                 isAlpha={false}
                                 a11yColors={[
-		{ textHex: color_options[color_choice].fg[j], reverse: true, placeholder: '◇' },
+		{ textHex: color_options[i].fg[j], reverse: true, placeholder: '◇' },
 	]}
                         />
                                 </span></span>
@@ -283,10 +276,7 @@
 
         border-radius: 0.25rem;
 
-        /*background-color: white;*/
-        /*background-size: 40px 45px;*/
-        /*background-image: linear-gradient(to right, rgba(0, 0, 0, 0.3) 50%, transparent 50%, transparent), linear-gradient(to right, transparent 0%, transparent 50%, rgba(0, 0, 0, 0) 50%), linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 50%, transparent 50%, transparent), linear-gradient(to bottom, transparent 0%, transparent 50%, rgba(0, 0, 0, 0) 50%), linear-gradient(to bottom, white 50%, transparent 50%, transparent), linear-gradient(to right, transparent 0%, transparent 50%, rgba(0, 0, 0, 0.5) 50%), none;*/
-
+        /* https://codepen.io/lloeki/pen/bGpRzb */
         background-color: #ccc;
         background-size: 10px 10px;
         background-image: linear-gradient( 45deg, #777 25%, transparent 25%, transparent),
