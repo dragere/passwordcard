@@ -21,24 +21,6 @@
         seed = Math.random().toString(36).slice(2, 2 + 16)
     }
 
-    let iterChunks = (iter: string | any[], len: number) => {
-        let chunks = [];
-        let splitter: Function;
-        if (typeof iter === "string") {
-            splitter = (str: string, start: number, end: number) => {
-                return str.substring(start, end)
-            }
-        } else {
-            splitter = (iter: string, start: number, end: number) => {
-                return iter.slice(start, end)
-            }
-        }
-        for (let i = 0, charsLength = iter.length; i < charsLength; i += len) {
-            chunks.push(splitter(iter, i, i + len));
-        }
-        return chunks;
-    }
-
     let classNames = {
         ",.;:!?-+*%/&'\"#()": "easy qwertz extra",
         "abcdefghijklmnopqrstuvwxyz": "lowercase latin",

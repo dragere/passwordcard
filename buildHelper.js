@@ -20,6 +20,7 @@ async function run() {
     await copyDir('./dist', './docs');
     console.log("copied './dist' to './docs'");
 
+    // for GitHub pages remove the first / in each url
     const file = 'docs/index.html';
     const data = await fs.readFile(file, 'utf8');
     const result = data.replace(/(?<=<.*?(href|src)=")\/(.*)(?="\s?\/?>)/gm, '$2');

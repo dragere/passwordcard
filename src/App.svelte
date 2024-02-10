@@ -41,10 +41,16 @@
             <pre>%Z((0'0'Y%OO:6h?</pre>
             .
             This password already has an acceptable entropy score of 84 bits in KeePassXC's generator.
+
+            <h5>Options</h5>
             <p>You can change the seed to modify the characters and colors around each block.</p>
-            In the options the character sets for both input and output can be changed.
+            In the options the character sets for both input (characters that can be used in the password you remember)
+            and output (characters in the resulting password) can be changed.
             Seed and output set will be printed in the bottom right corner, so you can recreate the card if
             necessary.
+            There are two color sets to choose from but each color can be customized separately as well.
+            This way you can even use the same color multiple times (for example if you're color blind).
+            To do that just click on the colors in the color customisation option.
             <p>Inspired by <a href="https://github.com/PeterBrockfeld/passwordCardGenerator">PeterBrockfeld/passwordCardGenerator</a>
                 and <a href="https://www.ines-it.de/informationssicherheit/passwortkarte/">ines-it password card</a>.
                 This implementation is more customizable and supports emoji (not looking pretty).

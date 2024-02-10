@@ -12,7 +12,7 @@ https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-i
 function sfc32(a, b, c, d) {
     return function() {
         a |= 0; b |= 0; c |= 0; d |= 0;
-        var t = (a + b | 0) + d | 0;
+        let t = (a + b | 0) + d | 0;
         d = d + 1 | 0;
         a = b ^ b >>> 9;
         b = c + (c << 3) | 0;
